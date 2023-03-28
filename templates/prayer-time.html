@@ -1,27 +1,35 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Prayer Times{% endblock %}</h1>
+  <h1>{% block title %}{{city}}{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-<table>
-  <tr>
-    <td>Fajr</td>
-    <td>Dhuhr</td>
-    <td>Asr</td>
-    <td class="active">Maghrib</td>
-    <td>Isha</td>
-  </tr>
-  <tr>
-    <td>{{fajr}}</td>
-    <td>{{dhuhr}}</td>
-    <td>{{asr}}</td>
-    <td class="active">{{maghrib}}</td>
-    <td>{{isha}}</td>
-  </tr>
+<table class="table table-bordered table-striped table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Fajr</th>
+      <th scope="col" class="bg-warning">Suhur</th>
+      <th scope="col">Sunrise</th>
+      <th scope="col">Dhuhr</th>
+      <th scope="col">Asr</th>
+      <th scope="col" class="bg-warning">Maghrib</th>
+      <th scope="col">Isha</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{prayer_times.Fajr}}</td>
+      <td class="bg-warning">{{prayer_times.Imsak}}</td>
+      <td>{{prayer_times.Sunrise}}</td>
+      <td>{{prayer_times.Dhuhr}}</td>
+      <td>{{prayer_times.Asr}}</td>
+      <td class="bg-warning">{{prayer_times.Maghrib}}</td>
+      <td>{{prayer_times.Isha}}</td>
+    </tr>
+  </tbody>
 </table>
-
+<p class="card-text text-muted">Today's date: {{date}}</p>
 {% endblock %}
 
 
