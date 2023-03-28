@@ -1,1 +1,1 @@
-## Flask Iftar Time Calculation
+## Flask PrayTime
