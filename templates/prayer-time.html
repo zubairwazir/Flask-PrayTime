@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Prayer Times{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<table>
+  <tr>
+    <td>Fajr</td>
+    <td>Dhuhr</td>
+    <td>Asr</td>
+    <td class="active">Maghrib</td>
+    <td>Isha</td>
+  </tr>
+  <tr>
+    <td>{{fajr}}</td>
+    <td>{{dhuhr}}</td>
+    <td>{{asr}}</td>
+    <td class="active">{{maghrib}}</td>
+    <td>{{isha}}</td>
+  </tr>
+</table>
+
+{% endblock %}
+
+

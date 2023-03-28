@@ -1,13 +1,21 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Iftar Time App</title>
-  </head>
-  <body>
-    <h1>Enter your location:</h1>
-    <form action="/iftar-time" method="POST">
-      <input type="text" name="location">
-      <input type="submit" value="Submit">
-    </form>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Prayer Times{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <form action="{{ url_for('prayer_time') }}" method="POST">
+          <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" class="form-control" id="location" name="location">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
