@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from geopy.geocoders import Nominatim
+from datetime import datetime
 import requests, json, time
 
 app = Flask(__name__)
@@ -10,9 +11,9 @@ def index():
 
 @app.route('/prayer-time', methods=['POST'])
 def prayer_time():
-    address = request.form['location']
-    geolocator = Nominatim(user_agent="iftar-time-app")
-    location = geolocator.geocode(address)
+    location = request.form['location']
+    geolocator = Nominatim(user_agent="prayer-time-app")
+    location = geolocator.geocode(location)
     latitude = location.latitude
     longitude = location.longitude
 
@@ -20,13 +21,18 @@ def prayer_time():
     url = f"https://api.aladhan.com/v1/timings/{int(time.time())}?latitude={latitude}&longitude={longitude}&method=1&school=1"
     response = requests.get(url)
     data = json.loads(response.text)
-    fajr = data['data']['timings']['Fajr']
-    dhuhr = data['data']['timings']['Dhuhr']
-    asr = data['data']['timings']['Asr']
-    maghrib = data['data']['timings']['Maghrib']
-    isha = data['data']['timings']['Isha']
+    timings = data['data']['timings']
+    #
+    date=datetime.today().date()
 
-    return render_template('prayer-time.html', fajr=fajr, dhuhr=dhuhr, asr=asr, maghrib=maghrib, isha=isha, city = address)
+    # Convert the timings to AM/PM format
+    prayer_times = {}
+    for key in timings:
+        time_obj = datetime.strptime(timings[key], '%H:%M')
+        time_str = time_obj.strftime('%I:%M %p')
+        prayer_times[key] = time_str
+
+    return render_template('prayer-time.html', prayer_times=prayer_times, city=location, date=date)
 
 if __name__ == "__main__":
     app.run(debug=True)
