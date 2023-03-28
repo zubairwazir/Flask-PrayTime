@@ -8,21 +8,25 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/iftar-time', methods=['POST'])
-def iftar_time():
+@app.route('/prayer-time', methods=['POST'])
+def prayer_time():
     address = request.form['location']
     geolocator = Nominatim(user_agent="iftar-time-app")
     location = geolocator.geocode(address)
     latitude = location.latitude
     longitude = location.longitude
 
-    # Send a GET request to the API endpoint to get the Iftar time
-    url = f"https://api.aladhan.com/v1/timings/{int(time.time())}?latitude={latitude}&longitude={longitude}&method=1"
+    # Send a GET request to the API endpoint to get the Prayer time
+    url = f"https://api.aladhan.com/v1/timings/{int(time.time())}?latitude={latitude}&longitude={longitude}&method=1&school=1"
     response = requests.get(url)
     data = json.loads(response.text)
-    iftar_time = data['data']['timings']['Maghrib']
+    fajr = data['data']['timings']['Fajr']
+    dhuhr = data['data']['timings']['Dhuhr']
+    asr = data['data']['timings']['Asr']
+    maghrib = data['data']['timings']['Maghrib']
+    isha = data['data']['timings']['Isha']
 
-    return render_template('iftar-time.html', iftar_time=iftar_time)
+    return render_template('prayer-time.html', fajr=fajr, dhuhr=dhuhr, asr=asr, maghrib=maghrib, isha=isha, city = address)
 
-if "__main__" == "__name__":
+if __name__ == "__main__":
     app.run(debug=True)
